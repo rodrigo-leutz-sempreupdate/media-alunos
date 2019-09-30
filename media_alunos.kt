@@ -1,12 +1,45 @@
-fun main(){ 
-	clearscreen()
+var alunoList = ArrayList<Aluno>()
 
-        var aluno: Aluno = readAluno()
-        showMedia(aluno) 
+fun main(){ 
+	do {
+		val menu = menu()
+		when(menu) {
+			"1" -> {
+				addAluno()
+			}
+			"2" -> {
+				listAluno()
+			}
+		}
+	} while(menu != "q")
 
 }
 private fun clearscreen(){
         print("\u001b[H\u001b[2J")
+}
+private fun menu(): String? {
+	clearscreen()
+	println("1 --> Adiciona Aluno.")
+	println("2 --> Lista alunos e médias.")
+	println("q --> Sair")
+	val menu = readLine()
+	return menu
+}
+private fun addAluno(){
+	val aluno = readAluno()
+	alunoList.add(aluno)
+}
+private fun listAluno(){
+	if(alunoList.size == 0){
+		println("Não existem alunos.")
+	}
+	else {
+		println("Lista de alunos e médias.")
+		for(x in 0..alunoList.size-1){
+			showMedia(alunoList.get(x))
+		}
+	}
+	readLine()
 }
 private fun readAluno(): Aluno {
         println("Digite o nome do aluno:")
@@ -54,4 +87,3 @@ data class Aluno(
         var n3: Double = 0.0,
         var n4: Double = 0.0
 )
-
