@@ -10,6 +10,9 @@ fun main(){
 			"2" -> {
 				listAluno()
 			}
+			"3" -> {
+				removeAluno()
+			}
 		}
 	} while(menu != "q")
 
@@ -21,6 +24,7 @@ private fun menu(): String? {
 	clearscreen()
 	println("1 --> Adiciona Aluno.")
 	println("2 --> Lista alunos e médias.")
+	println("3 --> Deleta aluno")
 	println("q --> Sair")
 	val menu = readLine()
 	return menu
@@ -40,6 +44,24 @@ private fun listAluno(){
 		}
 	}
 	readLine()
+}
+private fun getIndex(nome: String): Int? {
+	return alunoList.indexOfFirst { it.nome == nome }	
+}
+private fun removeAluno(){
+	var nomeAluno: String? = readLine()
+	if(nomeAluno == null){
+		println("Nome é nulo")
+	}
+	else{
+		val ind = getIndex(nomeAluno)
+		if(ind == null){
+			println("Não tem nenhum aluno com esse nome.")
+		}
+		else {
+			alunoList.removeAt(ind)
+		}
+	}
 }
 private fun readAluno(): Aluno {
         println("Digite o nome do aluno:")
