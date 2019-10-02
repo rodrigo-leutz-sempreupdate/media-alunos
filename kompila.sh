@@ -1,4 +1,5 @@
 #!/bin/bash
+rm javaFile.jar
 echo "Compilando"
 echo "----------"
 kotlinc $1 -include-runtime -d javaFile.jar

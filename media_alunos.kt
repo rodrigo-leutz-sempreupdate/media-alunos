@@ -31,9 +31,12 @@ private fun menu(): String? {
 }
 private fun addAluno(){
 	val aluno = readAluno()
-	alunoList.add(aluno)
+	if(aluno != null){
+		alunoList.add(aluno)
+	}
 }
 private fun listAluno(){
+	var mediaTotal: Double = 0.0
 	if(alunoList.size == 0){
 		println("Não existem alunos.")
 	}
@@ -41,31 +44,53 @@ private fun listAluno(){
 		println("Lista de alunos e médias.")
 		for(x in 0..alunoList.size-1){
 			showMedia(alunoList.get(x))
+			mediaTotal += getMedia(alunoList.get(x))
 		}
+		mediaTotal = mediaTotal/alunoList.size
+	        println("\n\nMédia da sala: $mediaTotal")
 	}
 	readLine()
 }
 private fun getIndex(nome: String): Int? {
 	return alunoList.indexOfFirst { it.nome == nome }	
 }
-private fun removeAluno(){
-	var nomeAluno: String? = readLine()
-	if(nomeAluno == null){
-		println("Nome é nulo")
+private fun existeNome(nome: String): Boolean {
+	val exist = alunoList.find { it.nome == nome }
+	if(exist == null){
+		return false
 	}
 	else{
-		val ind = getIndex(nomeAluno)
-		if(ind == null){
-			println("Não tem nenhum aluno com esse nome.")
-		}
-		else {
-			alunoList.removeAt(ind)
-		}
+		return true
 	}
 }
-private fun readAluno(): Aluno {
+private fun removeAluno(){
+	println("Digite o nome do aluno a ser removido:")
+	var nomeAluno = readNome()
+	if(!existeNome(nomeAluno)){
+		println("Não tem nenhum aluno com esse nome.")
+		readLine()
+	}
+	else {
+		val ind = getIndex(nomeAluno)
+		alunoList.removeAt(ind!!)
+	}
+}
+private fun readNome(): String{
+	var nome: String?
+	do{
+		nome = readLine()
+		if(nome == "") println("Nome não pode ser nulo. Digite novamente")
+	} while(nome == "")
+	return nome!!
+}
+private fun readAluno(): Aluno? {
         println("Digite o nome do aluno:")
-        val nome = readLine()
+        val nome = readNome()
+	if(existeNome(nome)){
+		println("Aluno ja existe")
+		readLine()
+		return null
+	}
         println("Digite a nota 1:") 
         val n1 = readNota()
         println("Digite a nota 2:") 
@@ -77,9 +102,12 @@ private fun readAluno(): Aluno {
         return Aluno(nome,n1,n2,n3,n4)
 }
 private fun showMedia(aluno: Aluno) {
-        val media = (aluno.n1+aluno.n2+aluno.n3+aluno.n4)/4
+        val media = getMedia(aluno)
         println("\nNome: "+aluno.nome)
         println("Média: $media")
+}
+private fun getMedia(aluno: Aluno): Double {
+	return (aluno.n1+aluno.n2+aluno.n3+aluno.n4)/4
 }
 private fun readNota(): Double {
         var nota = readLine()
